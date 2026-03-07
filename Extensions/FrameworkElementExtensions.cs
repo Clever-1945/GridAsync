@@ -1,4 +1,3 @@
-using System.Reflection;
 using System.Windows;
 using System.Windows.Media;
 
@@ -6,11 +5,10 @@ namespace AsyncUI.Extensions;
 
 public static class FrameworkElementExtensions
 {
-
-    /// <summary> От текущего элемента найти родителя, и в нем асинхронную операцию </summary>
+    /// <summary> Найти асинхронную операцию </summary>
     /// <param name="instance"></param>
     /// <returns></returns>
-    public static Lazy<AsyncAction> GetAsync(this FrameworkElement instance)
+    public static Lazy<AsyncAction> GetAsyncAction(this FrameworkElement instance)
     {
         return new Lazy<AsyncAction>(() =>
         {
