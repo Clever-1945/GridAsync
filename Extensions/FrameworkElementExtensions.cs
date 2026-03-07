@@ -1,8 +1,4 @@
-﻿using AsyncUI.Controls;
-using System;
-using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 using System.Windows;
 using System.Windows.Media;
 
@@ -10,31 +6,39 @@ namespace AsyncUI.Extensions;
 
 public static class FrameworkElementExtensions
 {
+
     /// <summary> От текущего элемента найти родителя, и в нем асинхронную операцию </summary>
     /// <param name="instance"></param>
     /// <returns></returns>
-    public static AsyncAction GetAsyncAction(this FrameworkElement instance)
+    public static Lazy<AsyncAction> GetAsync(this FrameworkElement instance)
     {
-        var current = instance;
-        do
+        return new Lazy<AsyncAction>(() =>
         {
-            if (current is ControlAsyncViewport)
+            return instance.FindAllGrids().FirstOrDefault()?.AsyncAction;
+        });
+    }
+    
+    public static IEnumerable<GridAsync.Controls.GridAsync> FindAllGrids(this DependencyObject parent)
+    {
+        if (parent == null)
+        {
+            yield break;
+        }
+
+        int count = VisualTreeHelper.GetChildrenCount(parent);
+        for (int i = 0; i < count; i++)
+        {
+            var child = VisualTreeHelper.GetChild(parent, i);
+            
+            if (child is GridAsync.Controls.GridAsync grid)
             {
-                return (current as ControlAsyncViewport).AsyncAction;
+                yield return grid;
             }
 
-            current = current?.Parent as FrameworkElement ?? GetVisualParent(current);
-        } while (current != null);
-        return null;
-    }
-
-    private static FrameworkElement GetVisualParent(this FrameworkElement instance)
-    {
-        if (instance == null)
-            return null;
-
-        var property = typeof(Visual).GetProperty("VisualParent", BindingFlags.Instance | BindingFlags.NonPublic);
-        var element = property.GetValue(instance) as FrameworkElement;
-        return element;
+            foreach (var innerGrid in FindAllGrids(child))
+            {
+                yield return innerGrid;
+            }
+        }
     }
 }

@@ -43,4 +43,27 @@ public class AsyncAction
 
         return tc.Task;
     }
+    
+    public Task StartAsync(Func<Task> fn)
+    {
+        var tc = new TaskCompletionSource();
+
+        Application.Current.Dispatcher.Invoke(OnStart);
+        ThreadPool.QueueUserWorkItem(async (s) =>
+        {
+            try
+            {
+                await fn();
+                Application.Current.Dispatcher.Invoke(() => OnDone?.Invoke(null));
+                tc.TrySetResult();
+            }
+            catch (Exception ex)
+            {
+                Application.Current.Dispatcher.Invoke(() => OnDone?.Invoke(ex));
+                tc.TrySetException(ex);
+            }
+        });
+
+        return tc.Task;
+    }
 }
