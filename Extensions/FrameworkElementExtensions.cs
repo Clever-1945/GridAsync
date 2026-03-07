@@ -16,7 +16,7 @@ public static class FrameworkElementExtensions
         });
     }
     
-    public static IEnumerable<GridAsync.Controls.GridAsync> FindAllGrids(this DependencyObject parent)
+    private static IEnumerable<GridAsync.Controls.GridAsync> FindAllGrids(this DependencyObject parent)
     {
         if (parent == null)
         {
