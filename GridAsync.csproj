@@ -5,6 +5,11 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
+        <Version>1.0.0</Version>
     </PropertyGroup>
+
+    <ItemGroup>
+      <Content Include=".github\workflows\publish.yml" />
+    </ItemGroup>
 
 </Project>
