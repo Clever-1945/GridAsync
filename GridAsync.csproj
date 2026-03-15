@@ -12,21 +12,4 @@
             А если в асинхронной операции произошла ошибка, то UI отобразит плашку с ошибкой.
         </Description>
     </PropertyGroup>
-
-    <ItemGroup>
-      <Compile Remove=".github\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <EmbeddedResource Remove=".github\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Remove=".github\**" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Page Remove=".github\**" />
-    </ItemGroup>
-
 </Project>
